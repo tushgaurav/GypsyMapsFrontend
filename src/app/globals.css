@@ -9,3 +9,16 @@ body {
   color: var(--text);
   background-color: white;
 }
+
+/* Utiltiy Styles */
+.bold {
+  font-weight: bold;
+}
+
+.cl-blue {
+  color: #3182ce;
+}
+
+.padding-vertical {
+  padding: 1em 0;
+}

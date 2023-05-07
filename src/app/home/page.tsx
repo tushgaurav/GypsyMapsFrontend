@@ -37,8 +37,26 @@ export default function Home() {
           <Image src={logo} alt="Logo" height={200} width={200} />
         </div>
 
+        <div className={styles.niet_hackathon}>
+          <Text fontSize="xs">NIET HACKATHON PREWIEW</Text>
+        </div>
+
         <div className={styles.main_content}>
           <Stack spacing={2}>
+            <Tabs
+              className={styles.spacing}
+              size="sm"
+              variant="soft-rounded"
+              colorScheme="blue"
+            >
+              <TabList>
+                <Tab _selected={{ color: "white", bg: "blue.600" }}>Car</Tab>
+                <Tab _selected={{ color: "white", bg: "blue.600" }}>
+                  Two Wheeler
+                </Tab>
+                <Tab _selected={{ color: "white", bg: "blue.600" }}>Foot</Tab>
+              </TabList>
+            </Tabs>
             <InputGroup>
               <InputLeftAddon
                 children={<FeatherIcon icon="arrow-up-right" />}
@@ -61,6 +79,18 @@ export default function Home() {
             </InputGroup>
           </Stack>
 
+          <Stack spacing={1}>
+            <Text className={styles.spacing}>
+              <span>Distance: </span>
+              <span className="cl-blue bold">1.9 KM</span>
+            </Text>
+
+            <Text>
+              <span>Duration: </span>
+              <span className="cl-blue bold">20 Minutes</span>
+            </Text>
+          </Stack>
+
           <Stack
             spacing={2}
             direction="row"
@@ -71,42 +101,18 @@ export default function Home() {
             <Text fontSize="xs">Recommended</Text>
           </Stack>
 
-          <ButtonGroup className={styles.spacing}>
-            <Button colorScheme="blue" variant="outline">
+          <ButtonGroup className="padding-vertical">
+            <Button colorScheme="blue" variant="outline" size="sm">
               Shortest Path
             </Button>
-            <Button colorScheme="blue" variant="outline">
+            <Button colorScheme="blue" variant="outline" size="sm">
               Shortest Time
             </Button>
           </ButtonGroup>
 
-          <Tabs
-            className={styles.spacing}
-            size="sm"
-            variant="soft-rounded"
-            colorScheme="blue"
-          >
-            <TabList>
-              <Tab>Car</Tab>
-              <Tab>Two Wheeler</Tab>
-              <Tab>Foot</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <p>Estimated Time: 40 minutes</p>
-              </TabPanel>
-              <TabPanel>
-                <p>Estimated Time: 30 minutes</p>
-              </TabPanel>
-              <TabPanel>
-                <p>Estimated Time: 200 minutes</p>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-
           <Card>
             <CardBody>
-              <Accordion allowToggle>
+              <Accordion defaultIndex={[2]} allowToggle>
                 <AccordionItem>
                   <h2>
                     <AccordionButton>
@@ -152,8 +158,7 @@ export default function Home() {
                   </h2>
                   <AccordionPanel pb={4}>
                     Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Facere omnis nesciunt provident, perferendis consequatur
-                    voluptas.
+                    Facere omnis nesciunt provident, p
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>

@@ -11,7 +11,7 @@
 }
 
 .center {
-  padding: 10px;
+  padding: 20px 10px;
   background-color: #96e2f5;
   border-radius: 0px 0px 10px 10px;
   display: flex;
@@ -20,14 +20,25 @@
   justify-content: center;
 }
 
+.niet_hackathon {
+  background-color: #3182ce;
+  color: white;
+  width: max-content;
+  padding: 1px 5px;
+  position: relative;
+  top: -10px;
+  margin: 0 auto;
+  border-radius: 5px;
+}
+
 .spacing {
   margin-top: 0.8em;
 }
 
 .main_content {
   padding: 20px;
+  padding-top: 0;
 }
-
 .input_bg {
   background-color: white;
 }
