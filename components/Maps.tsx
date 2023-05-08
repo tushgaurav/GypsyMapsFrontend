@@ -1,9 +1,5 @@
 "use client";
 
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import * as leaflet from 'leaflet'
-import "leaflet/dist/images/marker-shadow.png"
-
 import {
   MapContainer,
   Marker,
@@ -29,9 +25,11 @@ export default function Maps() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">Gypsy Maps</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {/* <Marker position={position}>
-        <Popup>🐻🍻🎉</Popup>
-      </Marker> */}
+      <Marker position={position}>
+        <Popup>
+          Source <br /> NIET College Plot 14
+        </Popup>
+      </Marker>
       <ZoomControl position="bottomright" />
     </MapContainer>
   );

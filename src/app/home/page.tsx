@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 
 import {
   Box,
-  Select,
+  Menu,
+  MenuButton,
+  MenuList,
   Stack,
   Card,
   Text,
@@ -37,34 +39,40 @@ import styles from "./page.module.css";
 
 export default function Home() {
   const [minimised, setMinimised] = useState(false);
-  const [source, setSource] = useState('');
-  const [dest, setDest] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  const [source, setSource] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [dest, setDest] = useState("");
+  const [suggestions, setSuggestions] = useState(["NIET", "GNIOT", "IILM"]);
 
-  const options = ["Option 1", "Option 2", "Option 3"];
+  // const options = ["Option 1", "Option 2", "Option 3"];
 
   function handleMinimise() {
     setMinimised(!minimised);
   }
 
+  const handleMenuItemClick = (suggestion) => {
+    setValue(suggestion);
+    setIsOpen(false);
+  };
+
   const handleChangeSource = async (event) => {
     setSource(event.target.value);
-    if (event.target.value.length >= 3) {
-      setSuggestions([]);
-      const response = await fetch(`http://127.0.0.1:8000/api/search/?text=${event.target.value}&maxResults=5`);
-      const data = await response.json();
-      // setSuggestions(response);
-      data.Results.forEach((result) => {
-        suggestions.push(result.Place.Label);
-      });
-    }
-    console.log(suggestions);
-  }
+    //   if (event.target.value.length >= 3) {
+    //     setSuggestions([]);
+    //     const response = await fetch(`http://127.0.0.1:8000/api/search/?text=${event.target.value}&maxResults=5`);
+    //     const data = await response.json();
+    //     // setSuggestions(response);
+    //     data.Results.forEach((result) => {
+    //       suggestions.push(result.Place.Label);
+    //     });
+    //   }
+    //   console.log(suggestions);
+  };
 
   const handleChangeDest = (event) => {
     setDest(event.target.value);
     console.log(dest);
-  }
+  };
 
   return (
     <div>
@@ -74,7 +82,7 @@ export default function Home() {
         </div>
 
         <div className={minimised ? styles.minimised : styles.niet_hackathon}>
-          <Text fontSize="xs">NIET HACKATHON PREWIEW</Text>
+          <Text fontSize="xs">NIET HACKATHON PREVIEW</Text>
         </div>
         <div className={styles.main_content}>
           <Stack spacing={2}>
@@ -103,13 +111,21 @@ export default function Home() {
                 _placeholder={{ color: "#A0AEC0" }}
                 onChange={handleChangeSource}
               />
-              <Select placeholder="Select an option">
-                {suggestions.map(option => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </Select>
+              {isOpen && (
+                <Menu>
+                  <MenuButton />
+                  <MenuList>
+                    {suggestions.map((suggestion) => (
+                      <MenuItem
+                        key={suggestion}
+                        onClick={() => handleMenuItemClick(suggestion)}
+                      >
+                        {suggestion}
+                      </MenuItem>
+                    ))}
+                  </MenuList>
+                </Menu>
+              )}
             </InputGroup>
             <InputGroup>
               <InputLeftAddon children={<FeatherIcon icon="arrow-down" />} />
@@ -167,7 +183,7 @@ export default function Home() {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel pb={4}>
-                    The average fuel is fucked bro.
+                    The average fuel consumption is lower than usual.
                   </AccordionPanel>
                 </AccordionItem>
 
@@ -183,9 +199,9 @@ export default function Home() {
                   <AccordionPanel pb={4}>
                     <Text>
                       <ul>
-                        <li>GB Road (Strip Club)</li>
+                        <li>NIET Greater Noida</li>
                         <li>Pandey's Home (Arcade Gaming)</li>
-                        <li>NIET College</li>
+                        <li>IILM College Greater Noida</li>
                       </ul>
                     </Text>
                   </AccordionPanel>
@@ -201,8 +217,9 @@ export default function Home() {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel pb={4}>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Facere omnis nesciunt provident, p
+                    Route between IILM College and NIET College is very good. No
+                    traffic is to be expected. Drive faster than normal to reach
+                    in optimal time.
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
@@ -229,7 +246,6 @@ export default function Home() {
       /> */}
 
       <Maps className={styles.map} />
-
     </div>
   );
 }
