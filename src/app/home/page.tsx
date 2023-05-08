@@ -33,14 +33,12 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 
-import {
-  AutoComplete,
-  AutoCompleteInput,
-  AutoCompleteItem,
-  AutoCompleteList,
-  AutoCompleteGroup,
-  AutoCompleteGroupTitle,
-} from "@choc-ui/chakra-autocomplete";
+// import { CUIAutoComplete } from "chakra-ui-autocomplete";
+
+// For Search ReactSearchAutocomplete
+import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+
+
 
 import FeatherIcon from "feather-icons-react";
 import Maps from "../../../components/Maps";
@@ -49,34 +47,95 @@ import Image from "next/image";
 import logo from "./Logo.png";
 import map from "./map.png";
 import styles from "./page.module.css";
-import Weather from "../../../components/Weather";
 
 export default function Home() {
   const [source, setSource] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [dest, setDest] = useState("");
-  const [suggestions, setSuggestions] = useState(["NIET", "GNIOT", "IILM"]);
+  let [suggestions, setSuggestions] = useState(["NIET", "GNIOT", "IILM"]);
+  
+  // const handleInputChange = (event) => {
+  //   const inputValue = event.target.value;
+  //   setSource(inputValue);
+  //   // fetch suggestions based on input value and update suggestions state
+  //   setSuggestions(["suggestion 1", "suggestion 2", "suggestion 3"]);
+  //   setIsOpen(true);
+  // };
 
-  const handleChangeSource = async (event) => {
-    setSource(event.target.value);
-    if (event.target.value.length >= 3) {
-      setSuggestions([]);
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/search/?text=${event.target.value}&maxResults=5`
-      );
-      const data = await response.json();
-      // setSuggestions(response);
-      data.Results.forEach((result) => {
-        suggestions.push(result.Place.Label);
+  // const handleMenuItemClick = () => {
+  //   setSuggestions("nIET");
+  //   setIsOpen(false);
+  // };
+
+  // const handleChangeSource = async (event) => {
+  //   setSource(event.target.value);
+  //     if (event.target.value.length >= 3) {
+  //       // setSuggestions([]);
+  //       const response = await fetch(`http://127.0.0.1:8000/api/search/?text=${event.target.value}&maxResults=5`);
+  //       const data = await response.json();
+  //       // setSuggestions(response);
+  //       // data.Results.forEach((result) => {
+  //       //   suggestions.push(result.Place.Label);
+  //       // });
+  //       const newList = [];
+  //       // console.log(data);
+        
+  //       for(let resultIndex = 0; resultIndex < data.Results.length; resultIndex++){
+  //         newList.push(data.Results[resultIndex].Place.Label);
+  //       }
+  //       console.log(newList);
+  //       setSuggestions(newList);
+  //     }
+  //     // console.log(suggestions);
+  // };
+
+  // const handleChangeDest = (event) => {
+  //   setDest(event.target.value);
+  //   console.log(dest);
+  // };
+
+  const [items, setItems] = useState([{}]);
+
+  const handleOnSearch = async (string, results) => {
+    // onSearch will have as the first callback parameter
+    // the string searched and for the second the results.
+
+    const response = await fetch(`http://127.0.0.1:8000/api/search/?text=${string}&maxResults=5`);
+    const data = await response.json();
+    const newList = [];
+    for(let resultIndex = 0; resultIndex < data.Results.length; resultIndex++){
+      newList.push({
+        id: resultIndex,
+        name : data.Results[resultIndex].Place.Label
       });
     }
-    console.log(suggestions);
-  };
+    setItems(newList);
+    console.log(newList);
+    console.log(string, results)
+  }
 
-  const handleChangeDest = (event) => {
-    setDest(event.target.value);
-    console.log(dest);
-  };
+  const handleOnHover = (result) => {
+    // the item hovered
+    console.log(result)
+  }
+
+  const handleOnSelect = (item) => {
+    // the item selected
+    console.log(item)
+  }
+
+  const handleOnFocus = () => {
+    console.log('Focused')
+  }
+
+  const formatResult = (item) => {
+    return (
+      <>
+        {/* <span style={{ display: 'block', textAlign: 'left' }}>id: {item.id}</span> */}
+        <span style={{ display: 'block', textAlign: 'left' }}>{item.name}</span>
+      </>
+    )
+  }
 
   return (
     <div>
@@ -103,49 +162,34 @@ export default function Home() {
                 </Tab>
                 <Tab _selected={{ color: "white", bg: "blue.600" }}>Foot</Tab>
               </TabList>
-
-              <Weather lat={23} lon={43} />
             </Tabs>
 
             <Stack spacing={2}>
               <div className={styles.inputGrp}>
                 <FeatherIcon icon="arrow-up-right" />
 
-                <AutoComplete openOnFocus>
-                  <AutoCompleteInput
-                    onChange={handleChangeSource}
-                    variant="filled"
-                  />
-                  <AutoCompleteList>
-                    {suggestions.map((suggestion, cid) => (
-                      <AutoCompleteItem
-                        key={`option-${cid}`}
-                        value={suggestions}
-                        textTransform="capitalize"
-                      >
-                        {suggestions}
-                      </AutoCompleteItem>
-                    ))}
-                  </AutoCompleteList>
-                </AutoComplete>
+                {/* For Search AutoComplete */}
+                <div className="App">
+                  <header className="App-header">
+                    <div style={{ width: 400 }}>
+                      <ReactSearchAutocomplete
+                        items={items}
+                        onSearch={handleOnSearch}
+                        onHover={handleOnHover}
+                        onSelect={handleOnSelect}
+                        onFocus={handleOnFocus}
+                        autoFocus
+                        formatResult={formatResult}
+                      />
+                    </div>
+                  </header>
+                </div>
+
               </div>
 
               <div className={styles.inputGrp}>
                 <FeatherIcon icon="arrow-down" />
-                <AutoComplete openOnFocus>
-                  <AutoCompleteInput variant="filled" />
-                  <AutoCompleteList>
-                    {suggestions.map((country, cid) => (
-                      <AutoCompleteItem
-                        key={`option-${cid}`}
-                        value={country}
-                        textTransform="capitalize"
-                      >
-                        {country}
-                      </AutoCompleteItem>
-                    ))}
-                  </AutoCompleteList>
-                </AutoComplete>
+
               </div>
             </Stack>
           </Stack>
@@ -180,8 +224,6 @@ export default function Home() {
               Shortest Time
             </Button>
           </ButtonGroup>
-
-          <Stack flex="row"></Stack>
 
           <Card>
             <CardBody>
