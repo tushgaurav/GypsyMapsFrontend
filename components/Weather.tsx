@@ -17,13 +17,13 @@ export default function Weather({ lat, lon }) {
   )
     .then((data) => data.json())
     .then((string) =>{
-    // console.log(string);
+    console.log(string);
       setWeatherObj({
         temp: string.main.temp,
         weather: string.weather[0].description,
         wind: string.wind.speed,
-      })}
-    );
+      });
+    });
 
   const celsius = weatherObj.temp - 273.15; // Convert Kelvin to Celsius
   const temperature = `${Math.round(celsius)}°C`; // Round to nearest whole number and add degree symbol
@@ -38,13 +38,14 @@ export default function Weather({ lat, lon }) {
   }
 
   return (
-    <div className={styles.temperature_display}>
-      <div className={styles.icon}>
-        <FeatherIcon icon={iconClassName} />
+    <div className={styles.display}>
+      <div className={styles.division}>
+        <FeatherIcon className={styles.icon} icon={iconClassName} />
+        <div className={styles.data}>{temperature}</div>
       </div>
       <div className={styles.temperature}>{temperature}</div>
-      <div className={styles.temperature}>{weatherObj.weather}</div>
-      <div className={styles.temperature}>{weatherObj.wind}</div>
+      <div>{weatherObj.weather}</div>
+      <div>{weatherObj.wind}</div>
     </div>
   );
 }
