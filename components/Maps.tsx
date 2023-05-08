@@ -1,5 +1,9 @@
 "use client";
 
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import * as leaflet from 'leaflet'
+import "leaflet/dist/images/marker-shadow.png"
+
 import {
   MapContainer,
   Marker,
