@@ -10,14 +10,14 @@ export default function Weather({ lat, lon }) {
     weather: "Not Available",
     wind: "-",
   });
-  const key = "282bac4065dfc8949b362abdbced0500";
+  const key = "35f31b82fd9b0c3cd70bc65fc7dc9ed6";
 
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`
   )
     .then((data) => data.json())
     .then((string) =>{
-    console.log(string);
+    // console.log(string);
       setWeatherObj({
         temp: string.main.temp,
         weather: string.weather[0].description,
@@ -43,8 +43,8 @@ export default function Weather({ lat, lon }) {
         <FeatherIcon icon={iconClassName} />
       </div>
       <div className={styles.temperature}>{temperature}</div>
-      <div>{weatherObj.weather}</div>
-      <div>{weatherObj.wind}</div>
+      <div className={styles.temperature}>{weatherObj.weather}</div>
+      <div className={styles.temperature}>{weatherObj.wind}</div>
     </div>
   );
 }

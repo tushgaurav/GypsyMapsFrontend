@@ -71,29 +71,36 @@ export default function Home() {
   // };
 
   const [items, setItems] = useState([{}]);
+  const [source , setSource] = useState('');
+  const [lat , setLat] = useState(33);
+  const [lon , setLon] = useState(32);
 
   const handleOnSearch = async (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
 
     const response = await fetch(
-      `http://127.0.0.1:8000/api/search/?text=${string}&maxResults=5`
+      `http://127.0.0.1:8000/api/search/?text=${string}&maxResults=6`
     );
     const data = await response.json();
+    console.log(data);
     const newList = [];
     for (
       let resultIndex = 0;
-      resultIndex < data.Results.length;
+      resultIndex < data.length;
       resultIndex++
     ) {
       newList.push({
         id: resultIndex,
-        name: data.Results[resultIndex].Place.Label,
+        name: data[resultIndex].display_name,
+        lat: data[resultIndex].lat,
+        lon: data[resultIndex].lon
       });
     }
     setItems(newList);
-    console.log(newList);
-    console.log(string, results);
+    // console.log(results);
+    // console.log(newList);
+    // console.log(string, results);
   };
 
   const formatResult = (item) => {
@@ -104,6 +111,12 @@ export default function Home() {
       </>
     );
   };
+  const setInput = (value) => {
+    setLat(value.lat);
+    setLon(value.lon);
+    // console.log(value);
+    // setSource(value.name);/
+  }
 
   return (
     <div>
@@ -139,6 +152,7 @@ export default function Home() {
                 items={items}
                 onSearch={handleOnSearch}
                 formatResult={formatResult}
+                onSelect={setInput}
               />
 
               <ReactSearchAutocomplete className={styles.pointer}
@@ -148,7 +162,7 @@ export default function Home() {
 
               />
 
-              <Weather lat={33} lon={32} />
+              <Weather lat={lat} lon={lon} />
             </Stack>
           </Stack>
 
