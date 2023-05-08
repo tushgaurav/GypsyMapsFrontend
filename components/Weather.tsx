@@ -16,12 +16,13 @@ export default function Weather({ lat, lon }) {
     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}`
   )
     .then((data) => data.json())
-    .then((string) =>
+    .then((string) =>{
+    console.log(string);
       setWeatherObj({
         temp: string.main.temp,
         weather: string.weather[0].description,
         wind: string.wind.speed,
-      })
+      })}
     );
 
   const celsius = weatherObj.temp - 273.15; // Convert Kelvin to Celsius
@@ -39,9 +40,9 @@ export default function Weather({ lat, lon }) {
   return (
     <div className={styles.temperature_display}>
       <div className={styles.icon}>
-        <FeatherIcon icon="sun" />
+        <FeatherIcon icon={iconClassName} />
       </div>
-      <div className={styles.temperature}>{weatherObj.temp}</div>
+      <div className={styles.temperature}>{temperature}</div>
       <div>{weatherObj.weather}</div>
       <div>{weatherObj.wind}</div>
     </div>

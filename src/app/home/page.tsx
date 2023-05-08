@@ -148,7 +148,7 @@ export default function Home() {
 
               />
 
-              <Weather lat={32} lon={32} />
+              <Weather lat={33} lon={32} />
             </Stack>
           </Stack>
 
