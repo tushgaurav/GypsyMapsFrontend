@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className={styles.top_container}>
+      <div className={minimised ? styles.minimised : styles.sidebar}>
         <div className={styles.center}>
           <Image src={logo} alt="Logo" height={200} width={200} />
         </div>
@@ -76,9 +76,6 @@ export default function Home() {
         <div className={minimised ? styles.minimised : styles.niet_hackathon}>
           <Text fontSize="xs">NIET HACKATHON PREWIEW</Text>
         </div>
-      </div>
-
-      <div className={minimised ? styles.minimised : styles.container}>
         <div className={styles.main_content}>
           <Stack spacing={2}>
             <Tabs
@@ -231,7 +228,8 @@ export default function Home() {
         alt="Map"
       /> */}
 
-      {/* <Maps /> */}
+      <Maps className={styles.map} />
+
     </div>
   );
 }
