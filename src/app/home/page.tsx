@@ -4,56 +4,32 @@ import { useState, useEffect } from "react";
 
 import {
   Box,
-  Menu,
-  MenuButton,
-  MenuList,
   Stack,
   Card,
   Text,
   CardBody,
-  Input,
-  InputLeftAddon,
-  InputGroup,
-  InputLeftElement,
   Button,
   ButtonGroup,
   Tabs,
   TabList,
-  TabPanels,
   Tab,
-  TabPanel,
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Flex,
-  FormControl,
-  FormLabel,
-  FormHelperText,
 } from "@chakra-ui/react";
 
-// import { CUIAutoComplete } from "chakra-ui-autocomplete";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
-// For Search ReactSearchAutocomplete
-import { ReactSearchAutocomplete } from 'react-search-autocomplete'
-
-
-
-import FeatherIcon from "feather-icons-react";
+import Weather from "../../../components/Weather";
 import Maps from "../../../components/Maps";
 
 import Image from "next/image";
 import logo from "./Logo.png";
-import map from "./map.png";
 import styles from "./page.module.css";
 
 export default function Home() {
-  const [source, setSource] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [dest, setDest] = useState("");
-  let [suggestions, setSuggestions] = useState(["NIET", "GNIOT", "IILM"]);
-  
   // const handleInputChange = (event) => {
   //   const inputValue = event.target.value;
   //   setSource(inputValue);
@@ -79,7 +55,7 @@ export default function Home() {
   //       // });
   //       const newList = [];
   //       // console.log(data);
-        
+
   //       for(let resultIndex = 0; resultIndex < data.Results.length; resultIndex++){
   //         newList.push(data.Results[resultIndex].Place.Label);
   //       }
@@ -100,42 +76,34 @@ export default function Home() {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
 
-    const response = await fetch(`http://127.0.0.1:8000/api/search/?text=${string}&maxResults=5`);
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/search/?text=${string}&maxResults=5`
+    );
     const data = await response.json();
     const newList = [];
-    for(let resultIndex = 0; resultIndex < data.Results.length; resultIndex++){
+    for (
+      let resultIndex = 0;
+      resultIndex < data.Results.length;
+      resultIndex++
+    ) {
       newList.push({
         id: resultIndex,
-        name : data.Results[resultIndex].Place.Label
+        name: data.Results[resultIndex].Place.Label,
       });
     }
     setItems(newList);
     console.log(newList);
-    console.log(string, results)
-  }
-
-  const handleOnHover = (result) => {
-    // the item hovered
-    console.log(result)
-  }
-
-  const handleOnSelect = (item) => {
-    // the item selected
-    console.log(item)
-  }
-
-  const handleOnFocus = () => {
-    console.log('Focused')
-  }
+    console.log(string, results);
+  };
 
   const formatResult = (item) => {
     return (
       <>
         {/* <span style={{ display: 'block', textAlign: 'left' }}>id: {item.id}</span> */}
-        <span style={{ display: 'block', textAlign: 'left' }}>{item.name}</span>
+        <span>{item.name}</span>
       </>
-    )
-  }
+    );
+  };
 
   return (
     <div>
@@ -165,32 +133,21 @@ export default function Home() {
             </Tabs>
 
             <Stack spacing={2}>
-              <div className={styles.inputGrp}>
-                <FeatherIcon icon="arrow-up-right" />
+              {/* For Search AutoComplete */}
 
-                {/* For Search AutoComplete */}
-                <div className="App">
-                  <header className="App-header">
-                    <div style={{ width: 400 }}>
-                      <ReactSearchAutocomplete
-                        items={items}
-                        onSearch={handleOnSearch}
-                        onHover={handleOnHover}
-                        onSelect={handleOnSelect}
-                        onFocus={handleOnFocus}
-                        autoFocus
-                        formatResult={formatResult}
-                      />
-                    </div>
-                  </header>
-                </div>
+              <ReactSearchAutocomplete
+                items={items}
+                onSearch={handleOnSearch}
+                formatResult={formatResult}
+              />
 
-              </div>
+              <ReactSearchAutocomplete
+                items={items}
+                onSearch={handleOnSearch}
+                formatResult={formatResult}
+              />
 
-              <div className={styles.inputGrp}>
-                <FeatherIcon icon="arrow-down" />
-
-              </div>
+              <Weather lat={32} lon={32} />
             </Stack>
           </Stack>
 
@@ -227,7 +184,7 @@ export default function Home() {
 
           <Card>
             <CardBody>
-              <Accordion defaultIndex={[2]} allowToggle>
+              <Accordion defaultIndex={[0]} allowToggle>
                 <AccordionItem>
                   <h2>
                     <AccordionButton>
@@ -282,14 +239,6 @@ export default function Home() {
           </Card>
         </div>
       </div>
-
-      {/* <Image
-        className={styles.map}
-        src={map}
-        width={"100vw"}
-        height={"100vh"}
-        alt="Map"
-      /> */}
 
       <Maps className={styles.map} />
     </div>
