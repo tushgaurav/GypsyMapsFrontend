@@ -20,6 +20,14 @@
   align-items: center;
   justify-content: center;
 }
+.search_input {
+  z-index: 1;
+  cursor: pointer;
+  
+}
+.pointer {
+  cursor: pointer;
+}
 
 .niet_hackathon {
   background-color: #3182ce;
@@ -34,6 +42,7 @@
 
 .spacing {
   margin-top: 0.8em;
+  z-index: -999;
 }
 
 .main_content {

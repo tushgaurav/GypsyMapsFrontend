@@ -135,16 +135,17 @@ export default function Home() {
             <Stack spacing={2}>
               {/* For Search AutoComplete */}
 
-              <ReactSearchAutocomplete
+              <ReactSearchAutocomplete className={styles.search_input}
                 items={items}
                 onSearch={handleOnSearch}
                 formatResult={formatResult}
               />
 
-              <ReactSearchAutocomplete
+              <ReactSearchAutocomplete className={styles.pointer}
                 items={items}
                 onSearch={handleOnSearch}
                 formatResult={formatResult}
+
               />
 
               <Weather lat={32} lon={32} />
@@ -169,7 +170,7 @@ export default function Home() {
             align="center"
             className={styles.spacing}
           >
-            <Button colorScheme="blue">Safety Mode</Button>
+            <Button colorScheme="blue" className={styles.spacing}>Safety Mode</Button>
             <Text fontSize="xs">Recommended</Text>
           </Stack>
 
