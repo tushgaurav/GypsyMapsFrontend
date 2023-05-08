@@ -84,6 +84,7 @@ export default function Home() {
     );
     const data = await response.json();
     console.log(data);
+    console.log("page.tsx render");
     const newList = [];
     for (
       let resultIndex = 0;
