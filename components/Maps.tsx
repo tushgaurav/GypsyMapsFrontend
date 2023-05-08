@@ -1,4 +1,7 @@
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import * as leaflet from 'leaflet'
+// import 'leaflet/dist/leaflet.css';
+import "leaflet/dist/images/marker-shadow.png"
 
 export default function Maps() {
   return (
