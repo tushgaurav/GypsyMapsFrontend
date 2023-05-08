@@ -71,9 +71,73 @@ export default function Home() {
   // };
 
   const [items, setItems] = useState([{}]);
-  const [source , setSource] = useState('');
-  const [lat , setLat] = useState(33);
-  const [lon , setLon] = useState(32);
+  const [source, setSource] = useState("");
+  const [lat, setLat] = useState(33);
+  const [lon, setLon] = useState(32);
+
+  const getRoutes = async (event) => {
+    var raw = JSON.stringify({
+      DeparturePosition: sourceCords,
+      DestinationPosition: destCords,
+      DepartureTime: "2023-05-08T23:47:25.244718",
+    });
+    var requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("http://127.0.0.1:8000/api/getRoute/", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        const data = result["routes"][0]["geometry"]["coordinates"];
+        const temp = [];
+        data.map((routes) => {
+          temp.push([routes[1], routes[0]]);
+        });
+        setTotalRoutes(temp);
+        console.log(totalRoutes);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const handleChangeSource = async (event) => {
+    setSource(event.target.value);
+    if (event.target.value.length >= 3) {
+      setSuggestions([]);
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/search/?text=${event.target.value}&maxResults=5`
+      );
+      const data = await response.json();
+      setSourceCords(data["Results"][0]["Place"]["Geometry"]["Point"]);
+      // setSuggestions(response);
+      data.Results.forEach((result) => {
+        suggestions.push(result.Place.Label);
+      });
+    }
+    // console.log(suggestions);
+    console.log(sourceCords);
+  };
+
+  const handleChangeDest = async (event) => {
+    setDest(event.target.value);
+    if (event.target.value.length >= 3) {
+      setSuggestions([]);
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/search/?text=${event.target.value}&maxResults=5`
+      );
+      const data = await response.json();
+      console.log(data);
+      setDestCords(data["Results"][0]["Place"]["Geometry"]["Point"]);
+      data.Results.forEach((result) => {
+        suggestions.push(result.Place.label);
+      });
+      // getRoutes(event);
+    }
+    // console.log(suggestions);
+    console.log(destCords);
+  };
 
   const handleOnSearch = async (string, results) => {
     // onSearch will have as the first callback parameter
@@ -86,16 +150,12 @@ export default function Home() {
     console.log(data);
     console.log("page.tsx render");
     const newList = [];
-    for (
-      let resultIndex = 0;
-      resultIndex < data.length;
-      resultIndex++
-    ) {
+    for (let resultIndex = 0; resultIndex < data.length; resultIndex++) {
       newList.push({
         id: resultIndex,
         name: data[resultIndex].display_name,
         lat: data[resultIndex].lat,
-        lon: data[resultIndex].lon
+        lon: data[resultIndex].lon,
       });
     }
     setItems(newList);
@@ -117,7 +177,7 @@ export default function Home() {
     setLon(value.lon);
     // console.log(value);
     // setSource(value.name);/
-  }
+  };
 
   return (
     <div>
@@ -149,21 +209,22 @@ export default function Home() {
             <Stack spacing={2}>
               {/* For Search AutoComplete */}
 
-              <ReactSearchAutocomplete className={styles.search_input}
+              <ReactSearchAutocomplete
+                className={styles.search_input}
                 items={items}
-                onSearch={handleOnSearch}
+                onSearch={handleChangeSource}
                 formatResult={formatResult}
                 onSelect={setInput}
               />
 
-              <ReactSearchAutocomplete className={styles.pointer}
+              <ReactSearchAutocomplete
+                className={styles.pointer}
                 items={items}
-                onSearch={handleOnSearch}
+                onSearch={handleChangeDest}
                 formatResult={formatResult}
-
               />
 
-              <Weather lat={lat} lon={lon} />
+              {/* <Weather lat={lat} lon={lon} /> */}
             </Stack>
           </Stack>
 
@@ -185,7 +246,9 @@ export default function Home() {
             align="center"
             className={styles.spacing}
           >
-            <Button colorScheme="blue" className={styles.spacing}>Safety Mode</Button>
+            <Button colorScheme="blue" className={styles.spacing}>
+              Safety Mode
+            </Button>
             <Text fontSize="xs">Recommended</Text>
           </Stack>
 
