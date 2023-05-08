@@ -38,20 +38,21 @@ import map from "./map.png";
 import styles from "./page.module.css";
 
 export default function Home() {
-  const [minimised, setMinimised] = useState(false);
   const [source, setSource] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [dest, setDest] = useState("");
   const [suggestions, setSuggestions] = useState(["NIET", "GNIOT", "IILM"]);
 
-  // const options = ["Option 1", "Option 2", "Option 3"];
+  const handleInputChange = (event) => {
+    const inputValue = event.target.value;
+    setSource(inputValue);
+    // fetch suggestions based on input value and update suggestions state
+    setSuggestions(["suggestion 1", "suggestion 2", "suggestion 3"]);
+    setIsOpen(true);
+  };
 
-  function handleMinimise() {
-    setMinimised(!minimised);
-  }
-
-  const handleMenuItemClick = (suggestion) => {
-    setValue(suggestion);
+  const handleMenuItemClick = () => {
+    setSuggestions("nIET");
     setIsOpen(false);
   };
 
@@ -76,12 +77,12 @@ export default function Home() {
 
   return (
     <div>
-      <div className={minimised ? styles.minimised : styles.sidebar}>
+      <div className={styles.sidebar}>
         <div className={styles.center}>
           <Image src={logo} alt="Logo" height={200} width={200} />
         </div>
 
-        <div className={minimised ? styles.minimised : styles.niet_hackathon}>
+        <div className={styles.niet_hackathon}>
           <Text fontSize="xs">NIET HACKATHON PREVIEW</Text>
         </div>
         <div className={styles.main_content}>
@@ -227,15 +228,6 @@ export default function Home() {
           </Card>
         </div>
       </div>
-      {minimised ? (
-        <button className={styles.minimise_btn} onClick={handleMinimise}>
-          <FeatherIcon icon="chevrons-down" />
-        </button>
-      ) : (
-        <button className={styles.minimise_btn} onClick={handleMinimise}>
-          <FeatherIcon icon="chevrons-up" />
-        </button>
-      )}
 
       {/* <Image
         className={styles.map}
