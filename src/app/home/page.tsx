@@ -49,6 +49,7 @@ import Image from "next/image";
 import logo from "./Logo.png";
 import map from "./map.png";
 import styles from "./page.module.css";
+import Weather from "../../../components/Weather";
 
 export default function Home() {
   const [source, setSource] = useState("");
@@ -56,31 +57,20 @@ export default function Home() {
   const [dest, setDest] = useState("");
   const [suggestions, setSuggestions] = useState(["NIET", "GNIOT", "IILM"]);
 
-  const handleInputChange = (event) => {
-    const inputValue = event.target.value;
-    setSource(inputValue);
-    // fetch suggestions based on input value and update suggestions state
-    setSuggestions(["suggestion 1", "suggestion 2", "suggestion 3"]);
-    setIsOpen(true);
-  };
-
-  const handleMenuItemClick = () => {
-    setSuggestions("nIET");
-    setIsOpen(false);
-  };
-
   const handleChangeSource = async (event) => {
     setSource(event.target.value);
-    //   if (event.target.value.length >= 3) {
-    //     setSuggestions([]);
-    //     const response = await fetch(`http://127.0.0.1:8000/api/search/?text=${event.target.value}&maxResults=5`);
-    //     const data = await response.json();
-    //     // setSuggestions(response);
-    //     data.Results.forEach((result) => {
-    //       suggestions.push(result.Place.Label);
-    //     });
-    //   }
-    //   console.log(suggestions);
+    if (event.target.value.length >= 3) {
+      setSuggestions([]);
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/search/?text=${event.target.value}&maxResults=5`
+      );
+      const data = await response.json();
+      // setSuggestions(response);
+      data.Results.forEach((result) => {
+        suggestions.push(result.Place.Label);
+      });
+    }
+    console.log(suggestions);
   };
 
   const handleChangeDest = (event) => {
@@ -113,6 +103,8 @@ export default function Home() {
                 </Tab>
                 <Tab _selected={{ color: "white", bg: "blue.600" }}>Foot</Tab>
               </TabList>
+
+              <Weather lat={23} lon={43} />
             </Tabs>
 
             <Stack spacing={2}>
@@ -120,15 +112,18 @@ export default function Home() {
                 <FeatherIcon icon="arrow-up-right" />
 
                 <AutoComplete openOnFocus>
-                  <AutoCompleteInput variant="filled" />
+                  <AutoCompleteInput
+                    onChange={handleChangeSource}
+                    variant="filled"
+                  />
                   <AutoCompleteList>
-                    {suggestions.map((country, cid) => (
+                    {suggestions.map((suggestion, cid) => (
                       <AutoCompleteItem
                         key={`option-${cid}`}
-                        value={country}
+                        value={suggestions}
                         textTransform="capitalize"
                       >
-                        {country}
+                        {suggestions}
                       </AutoCompleteItem>
                     ))}
                   </AutoCompleteList>
@@ -185,6 +180,8 @@ export default function Home() {
               Shortest Time
             </Button>
           </ButtonGroup>
+
+          <Stack flex="row"></Stack>
 
           <Card>
             <CardBody>
