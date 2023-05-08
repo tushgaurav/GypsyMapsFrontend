@@ -27,7 +27,20 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Flex,
+  FormControl,
+  FormLabel,
+  FormHelperText,
 } from "@chakra-ui/react";
+
+import {
+  AutoComplete,
+  AutoCompleteInput,
+  AutoCompleteItem,
+  AutoCompleteList,
+  AutoCompleteGroup,
+  AutoCompleteGroupTitle,
+} from "@choc-ui/chakra-autocomplete";
 
 import FeatherIcon from "feather-icons-react";
 import Maps from "../../../components/Maps";
@@ -75,6 +88,14 @@ export default function Home() {
     console.log(dest);
   };
 
+  const countries = [
+    "nigeria",
+    "japan",
+    "india",
+    "united states",
+    "south korea",
+  ];
+
   return (
     <div>
       <div className={styles.sidebar}>
@@ -101,43 +122,45 @@ export default function Home() {
                 <Tab _selected={{ color: "white", bg: "blue.600" }}>Foot</Tab>
               </TabList>
             </Tabs>
-            <InputGroup>
-              <InputLeftAddon
-                children={<FeatherIcon icon="arrow-up-right" />}
-              />
-              <Input
-                type="tel"
-                className={styles.input_bg}
-                placeholder="Source"
-                _placeholder={{ color: "#A0AEC0" }}
-                onChange={handleChangeSource}
-              />
-              {isOpen && (
-                <Menu>
-                  <MenuButton />
-                  <MenuList>
-                    {suggestions.map((suggestion) => (
-                      <MenuItem
-                        key={suggestion}
-                        onClick={() => handleMenuItemClick(suggestion)}
+
+            <Stack spacing={2}>
+              <div className={styles.inputGrp}>
+                <FeatherIcon icon="arrow-up-right" />
+
+                <AutoComplete openOnFocus>
+                  <AutoCompleteInput variant="filled" />
+                  <AutoCompleteList>
+                    {countries.map((country, cid) => (
+                      <AutoCompleteItem
+                        key={`option-${cid}`}
+                        value={country}
+                        textTransform="capitalize"
                       >
-                        {suggestion}
-                      </MenuItem>
+                        {country}
+                      </AutoCompleteItem>
                     ))}
-                  </MenuList>
-                </Menu>
-              )}
-            </InputGroup>
-            <InputGroup>
-              <InputLeftAddon children={<FeatherIcon icon="arrow-down" />} />
-              <Input
-                className={styles.input_bg}
-                type="tel"
-                placeholder="Destination"
-                _placeholder={{ color: "#A0AEC0" }}
-                onChange={handleChangeDest}
-              />
-            </InputGroup>
+                  </AutoCompleteList>
+                </AutoComplete>
+              </div>
+
+              <div className={styles.inputGrp}>
+                <FeatherIcon icon="arrow-down" />
+                <AutoComplete openOnFocus>
+                  <AutoCompleteInput variant="filled" />
+                  <AutoCompleteList>
+                    {countries.map((country, cid) => (
+                      <AutoCompleteItem
+                        key={`option-${cid}`}
+                        value={country}
+                        textTransform="capitalize"
+                      >
+                        {country}
+                      </AutoCompleteItem>
+                    ))}
+                  </AutoCompleteList>
+                </AutoComplete>
+              </div>
+            </Stack>
           </Stack>
 
           <Stack spacing={1}>
