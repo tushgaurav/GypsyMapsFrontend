@@ -88,14 +88,6 @@ export default function Home() {
     console.log(dest);
   };
 
-  const countries = [
-    "nigeria",
-    "japan",
-    "india",
-    "united states",
-    "south korea",
-  ];
-
   return (
     <div>
       <div className={styles.sidebar}>
@@ -130,7 +122,7 @@ export default function Home() {
                 <AutoComplete openOnFocus>
                   <AutoCompleteInput variant="filled" />
                   <AutoCompleteList>
-                    {countries.map((country, cid) => (
+                    {suggestions.map((country, cid) => (
                       <AutoCompleteItem
                         key={`option-${cid}`}
                         value={country}
@@ -148,7 +140,7 @@ export default function Home() {
                 <AutoComplete openOnFocus>
                   <AutoCompleteInput variant="filled" />
                   <AutoCompleteList>
-                    {countries.map((country, cid) => (
+                    {suggestions.map((country, cid) => (
                       <AutoCompleteItem
                         key={`option-${cid}`}
                         value={country}
