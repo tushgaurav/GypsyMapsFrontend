@@ -49,6 +49,11 @@ const multiPolyline = [
   [28.46282, 77.49527],
 ];
 
+const mapStyle = {
+  color: "#f00", // red
+  fillColor: "#0f0", // green
+};
+
 const fillBlueOptions = { fillColor: "blue" };
 const blackOptions = { color: "black" };
 const limeOptions = { color: "lime" };
@@ -67,8 +72,9 @@ export default function Maps() {
       zoomControl={false}
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">Gypsy Maps</a> contributors'
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">Gypsy Maps</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        {...mapStyle}
       />
       <Polyline pathOptions={limeOptions} positions={multiPolyline} />
       <Marker position={position}>
